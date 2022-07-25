@@ -1,8 +1,8 @@
 import BaseSeeder from '@ioc:Adonis/Lucid/Seeder'
-import PatientFactory from 'Database/factories/PatientFactory';
+import GenderFactory from 'Database/factories/GenderFactory'
 
 export default class extends BaseSeeder {
   public async run () {
-    await PatientFactory.createMany(5);
+   await GenderFactory.createMany(2);
   }
 }
