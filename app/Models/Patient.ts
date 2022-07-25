@@ -1,6 +1,7 @@
 import { DateTime } from 'luxon'
-import { BaseModel, beforeCreate, column } from '@ioc:Adonis/Lucid/Orm'
+import { BaseModel, beforeCreate, belongsTo, column, HasOne, hasOne } from '@ioc:Adonis/Lucid/Orm'
 import bcrypt from 'bcrypt';
+import Gender from './Gender';
 
 export default class Patient extends BaseModel {
   @column({ isPrimary: true })
@@ -29,11 +30,13 @@ export default class Patient extends BaseModel {
 
   @column.dateTime({ autoCreate: true, autoUpdate: true })
   public updatedAt: DateTime
-
   
   @beforeCreate()
   public static async setEncryptedPassword(patient: Patient) {
     const salt = await bcrypt.genSalt(10);
     patient.password = await bcrypt.hash(patient.password, salt)
   }
+
+  @hasOne(() => Gender)
+  public gender: HasOne<typeof Gender>
 }
