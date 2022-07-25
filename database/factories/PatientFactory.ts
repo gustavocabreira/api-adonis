@@ -6,7 +6,7 @@ export default Factory.define(Patient, ({ faker }) => {
     fullName: faker.name.findName(),
     email: faker.internet.email(),
     password: faker.internet.password(),
-    birth_date: faker.date.birthdate(),
-    gender_id: 1
+    birthDate: faker.date.birthdate(),
+    genderId: 1
   }
 }).build()

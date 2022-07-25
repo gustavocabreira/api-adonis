@@ -3,6 +3,6 @@ import GenderFactory from 'Database/factories/GenderFactory'
 
 export default class extends BaseSeeder {
   public async run () {
-   await GenderFactory.createMany(2);
+    await GenderFactory.create();
   }
 }

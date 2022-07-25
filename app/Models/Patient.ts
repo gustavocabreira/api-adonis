@@ -17,13 +17,13 @@ export default class Patient extends BaseModel {
   public password: string
 
   @column()
-  public birth_date: Date
+  public birthDate: Date
 
   @column()
-  public gender_id: number
+  public genderId: number
 
   @column()
-  public status_id: number
+  public statusId: number
 
   @column.dateTime({ autoCreate: true })
   public createdAt: DateTime
@@ -34,7 +34,7 @@ export default class Patient extends BaseModel {
   @beforeCreate()
   public static async setEncryptedPassword(patient: Patient) {
     const salt = await bcrypt.genSalt(10);
-    patient.password = await bcrypt.hash(patient.password, salt)
+    patient.password = await bcrypt.hash(patient.email, salt)
   }
 
   @hasOne(() => Gender)

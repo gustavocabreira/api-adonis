@@ -1,6 +1,5 @@
 import Gender from 'App/Models/Gender'
 import Factory from '@ioc:Adonis/Lucid/Factory'
-import { Faker } from '@faker-js/faker'
 
 export default Factory.define(Gender, ({ faker }) => {
   const gender = faker.name.gender(true);

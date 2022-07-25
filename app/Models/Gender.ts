@@ -10,7 +10,7 @@ export default class Gender extends BaseModel {
   public description: string
   
   @column()
-  public status: boolean
+  public statusId: number
 
   @column.dateTime({ autoCreate: true })
   public createdAt: DateTime
