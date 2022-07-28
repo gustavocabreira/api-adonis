@@ -3,7 +3,7 @@ import { test } from '@japa/runner'
 import GenderFactory from 'Database/factories/GenderFactory';
 import PatientFactory from 'Database/factories/PatientFactory';
 import StatusFactory from 'Database/factories/StatusFactory';
-
+ 
 test.group('Patients create', (group) => {
   group.each.setup(async () => {
     await Database.beginGlobalTransaction()
