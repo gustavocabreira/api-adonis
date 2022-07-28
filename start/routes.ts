@@ -25,5 +25,6 @@ Route.get('/', async () => {
 })
 
 Route.group(() => {
-  Route.resource('patients', 'PatientsController').apiOnly()
+  Route.resource('patients', 'PatientsController').apiOnly();
+  Route.resource('users', 'UsersController').apiOnly();
 }).prefix('api');
