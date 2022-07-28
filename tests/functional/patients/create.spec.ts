@@ -1,5 +1,6 @@
 import Database from '@ioc:Adonis/Lucid/Database';
 import { test } from '@japa/runner'
+import Patient from 'App/Models/Patient';
 import GenderFactory from 'Database/factories/GenderFactory';
 import PatientFactory from 'Database/factories/PatientFactory';
 import StatusFactory from 'Database/factories/StatusFactory';
@@ -24,6 +25,11 @@ test.group('Patients create', (group) => {
         genderId: 1,
       });
     response.assertStatus(201);
+    response.assertBodyContains({
+      id: 1,
+      full_name: 'Gustavo Cabreira',
+      email: 'gustavo.softdev@gmail.com'
+    });
   });
 
   test('it should throw an error if trying to insert a duplicated email', async ({client}) => {
