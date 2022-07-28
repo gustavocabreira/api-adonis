@@ -36,7 +36,7 @@ export default class UsersController {
       return response.status(404).send({ error: 'User not found.' });
     }
     
-    let data = request.all();
+    let data = request.only(['fullName', 'email', 'statusId', 'password']);
     const { password, oldPassword, confirmPassword } = request.only(['password', 'oldPassword', 'confirmPassword']);
     
     if (password && oldPassword && confirmPassword) {
@@ -48,9 +48,6 @@ export default class UsersController {
       if (!(password === confirmPassword)) {
         return response.status(422).send({ error: "Password and confirm password are different." });
       }
-
-      delete data.oldPassword;
-      delete data.confirmPassword;
 
       data.password = await bcrypt.hash(password, 10);
     }
