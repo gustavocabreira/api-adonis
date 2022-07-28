@@ -16,7 +16,16 @@ export default class UsersController {
     return response.status(201).json(user);
   }
 
-  public async show({}: HttpContextContract) {}
+  public async show({request, response}: HttpContextContract) {
+    const id = request.param('id');
+    const user = await User.find(id);
+
+    if(!user) {
+      return response.status(404).json({error: 'User not found.'});
+    }
+
+    return response.status(200).json(user);
+  }
 
   public async update({}: HttpContextContract) {}
 
