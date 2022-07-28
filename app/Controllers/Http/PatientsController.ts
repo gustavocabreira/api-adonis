@@ -3,7 +3,10 @@ import Patient from 'App/Models/Patient';
 import bcrypt from 'bcrypt';
 
 export default class PatientsController {
-  public async index({ }: HttpContextContract) { }
+  public async index({ response }: HttpContextContract) {
+    const patients = await Patient.all();
+    return response.status(200).send(patients);
+  }
 
   public async store({ request, response }: HttpContextContract) {
     const data = request.only(['fullName', 'email', 'birthDate', 'genderId']);
