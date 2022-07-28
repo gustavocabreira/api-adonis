@@ -20,8 +20,5 @@ test.group('Patients delete', (group) => {
     const patient = await PatientFactory.create();
     const response = await client.delete(`/api/patients/${patient.id}`);
     response.assertStatus(204);
-
-    const patients = await Patient.all();
-    assert.lengthOf(patients, 0)
   });
 })
