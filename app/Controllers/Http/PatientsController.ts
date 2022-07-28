@@ -39,5 +39,9 @@ export default class PatientsController {
     return response.status(200).send(true);
   }
 
-  public async destroy({}: HttpContextContract) {}
+  public async destroy({request, response}: HttpContextContract) {
+    const patient = await Patient.find(request.param('id'));
+    await patient?.delete();
+    return response.status(204);
+  }
 }
