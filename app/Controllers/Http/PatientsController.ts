@@ -38,7 +38,7 @@ export default class PatientsController {
       return response.status(404).send({ error: 'Patient not found.' });
     }
 
-    let data = request.all();
+    let data = request.only(['fullName', 'email', 'birthDate', 'statusId', 'genderId', 'password']);
 
     const { password, oldPassword, confirmPassword } = request.only(['password', 'oldPassword', 'confirmPassword']);
     if (password && oldPassword && confirmPassword) {
@@ -50,9 +50,6 @@ export default class PatientsController {
       if (!(password === confirmPassword)) {
         return response.status(422).send({ error: "Password and confirm password are different." });
       }
-
-      delete data.oldPassword;
-      delete data.confirmPassword;
 
       data.password = await bcrypt.hash(password, 10);
     }
