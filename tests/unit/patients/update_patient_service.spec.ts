@@ -1,19 +1,9 @@
 import { test } from '@japa/runner'
 import { PatientRepositoryMock } from './Mocks/PatientRepositoryMock';
-import { IPatientRepository } from '../../../app/Interfaces/IPatientRepository';
 import { PatientDTOMock } from './Mocks/PatientDTOMock';
-import { IUser } from '../../../app/Interfaces/IUser';
 import { CreatePatientService } from '../../../app/Services/CreatePatientService';
-
-class UpdatePatientService {
-
-  constructor(private patientRepository: IPatientRepository){}
-
-  async execute(patient: IUser, payload: Object): Promise<void> {
-    this.patientRepository.update(patient, payload);
-  }
-
-}
+import { UpdatePatientDTO } from '../../../app/DTOs/UpdatePatientDTO';
+import { UpdatePatientService } from '../../../app/Services/Patients/UpdatePatientService';
 
 const id: string = 'any_random_id';
 
@@ -49,9 +39,9 @@ test.group('UpdatePatientService', () => {
   test('it can update a patient', async({assert}) => {
     const {patient, patientRepositoryMock, updatePatientService} = await makeSut();
 
-    const payload = {
+    const payload = new UpdatePatientDTO({
       fullName: 'Other name'
-    }
+    });
 
     await updatePatientService.execute(patient, payload);
 
