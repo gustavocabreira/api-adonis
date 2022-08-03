@@ -34,11 +34,13 @@ interface PatientRepository {
 
 class PatientRepositoryMock implements PatientRepository {
   public patients: IUser[] = [];
+  public count = 0;
 
   constructor() {}
 
   async create(patient: IUser): Promise<IUser> {
     this.patients.push(patient);
+    this.count++;
     return patient;
   }
 }
@@ -57,7 +59,8 @@ test.group('CreatePatientService', () => {
     const response = await sut.execute(patient);
 
     assert.instanceOf(response, PatientDTO)
-    assert.deepEqual(response, patient);
+    assert.deepEqual(response, patient)
     assert.lengthOf(patientRepository.patients, 1)
+    assert.equal(patientRepository.count, 1)
   });
 })
