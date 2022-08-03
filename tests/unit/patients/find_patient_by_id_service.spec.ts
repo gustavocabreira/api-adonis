@@ -2,17 +2,7 @@ import { test } from '@japa/runner'
 import { PatientDTOMock } from './Mocks/PatientDTOMock';
 import { PatientRepositoryMock } from './Mocks/PatientRepositoryMock';
 import { CreatePatientService } from '../../../app/Services/CreatePatientService';
-import { IUser } from 'App/Interfaces/IUser';
-import { IPatientRepository } from '../../../app/Interfaces/IPatientRepository';
-
-class FindPatientByIdService {
-
-  constructor(private patientRepository: IPatientRepository) {}
-
-  async execute(id: string): Promise<IUser | undefined> {
-    return this.patientRepository.findById(id);
-  }
-}
+import { FindPatientByIdService } from '../../../app/Services/FindPatientByIdService';
 
 type SutOutput = {
   patient: PatientDTOMock,
@@ -49,7 +39,17 @@ test.group('FindPatientServiceById', () => {
     if(!id) return;
 
     const result = await sut.execute(id);
-    
+
     assert.equal(result?.id, id);
   });
+
+  test('it should not be able to retrive a patient when providing invalid id', async({assert}) => {
+    const {sut} = await makeSut();
+
+    try {
+      await sut.execute('invalid_id');
+    } catch(error) {
+      assert.equal('Patient not found.', error.message);
+    }
+  })
 })
