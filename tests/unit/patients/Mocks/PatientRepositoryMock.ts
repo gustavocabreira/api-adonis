@@ -20,4 +20,11 @@ export class PatientRepositoryMock implements IPatientRepository {
     async findById(id: string): Promise<IUser | undefined> {
       return this.patients.find(patient => patient.id === id);
     }
+
+    async update(patient: IUser, payload: Object): Promise<void> {
+      const foundPatient = this.patients.find(_patient => _patient.id === patient.id);
+      if(foundPatient === undefined) return
+
+      Object.assign(foundPatient, payload);
+    }
 }
