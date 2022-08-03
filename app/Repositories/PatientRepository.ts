@@ -1,6 +1,7 @@
 import { IPatientRepository } from "App/Interfaces/IPatientRepository";
 import { IUser } from "App/Interfaces/IUser";
 import Patient from '../Models/Patient';
+import { IUserUpdate } from '../Interfaces/IUserUpdate';
 
 export class PatientRepository implements IPatientRepository {
     constructor() {}
@@ -24,5 +25,11 @@ export class PatientRepository implements IPatientRepository {
       if(patient === null) return undefined;
 
       return patient;
+    }
+
+    async update(patient: Patient, payload: IUserUpdate): Promise<void> {
+      delete payload.newPassword;
+      delete payload.confirmPassword;
+      await patient.merge(payload).save();
     }
 }

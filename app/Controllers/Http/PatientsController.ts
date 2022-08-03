@@ -6,6 +6,9 @@ import { PatientRepository } from '../../Repositories/PatientRepository';
 import { PatientDTO } from '../../DTOs/PatientDTO';
 import EmailAlreadyBeenTakenException from '../../Exceptions/EmailAlreadyBeenTakenException';
 import CreatePatientValidator from '../../Validators/CreatePatientValidator';
+import { UpdatePatientService } from '../../Services/Patients/UpdatePatientService';
+import UpdatePatientValidator from '../../Validators/UpdatePatientValidator';
+import { UpdatePatientDTO } from '../../DTOs/UpdatePatientDTO';
 
 export default class PatientsController {
   public async index({ response }: HttpContextContract) {
@@ -40,30 +43,16 @@ export default class PatientsController {
   }
 
   public async update({ request, response }: HttpContextContract) {
-    const patient = await Patient.find(request.param('id'));
+    const id = request.param('id');
+    const updatePatientService = new UpdatePatientService(new PatientRepository());
+    const payload = new UpdatePatientDTO(await request.validate(UpdatePatientValidator));
 
-    if (!patient) {
-      return response.status(404).send({ error: 'Patient not found.' });
+    try {
+      await updatePatientService.execute(id, payload);
+      return response.status(200).send(true);
+    } catch (exception) {
+      return response.status(exception.status).json({error: exception.message});
     }
-
-    let data = request.only(['fullName', 'email', 'birthDate', 'statusId', 'genderId', 'password']);
-
-    const { password, oldPassword, confirmPassword } = request.only(['password', 'oldPassword', 'confirmPassword']);
-    if (password && oldPassword && confirmPassword) {
-      const equalsPassword = await bcrypt.compare(oldPassword, patient.password);
-      if (!equalsPassword) {
-        return response.status(422).send({ error: "Old password is wrong." });
-      }
-
-      if (!(password === confirmPassword)) {
-        return response.status(422).send({ error: "Password and confirm password are different." });
-      }
-
-      data.password = await bcrypt.hash(password, 10);
-    }
-
-    await patient.merge(data).save();
-    return response.status(200).send(true);
   }
 
   public async destroy({ request, response }: HttpContextContract) {
