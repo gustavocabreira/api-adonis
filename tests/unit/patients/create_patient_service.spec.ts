@@ -3,7 +3,6 @@ import { CreatePatientService } from 'App/Services/CreatePatientService';
 import { PatientDTOMock } from './Mocks/PatientDTOMock';
 import { PatientRepositoryMock } from './Mocks/PatientRepositoryMock';
 
-
 type SutOutput = {
   patient: PatientDTOMock,
   patientrepositoryMock: PatientRepositoryMock,
@@ -15,7 +14,8 @@ const makeSut = (): SutOutput => {
     fullName: 'Gustavo de Sousa Cabreira',
     email: 'gustavo.softdev@gmail.com',
     genderId: 1,
-    birthDate: new Date()
+    birthDate: new Date(),
+    password: '12345678'
   });
 
   const patientrepositoryMock = new PatientRepositoryMock();
@@ -39,4 +39,4 @@ test.group('CreatePatientService', () => {
     assert.equal(patientrepositoryMock.count, 1)
     assert.equal(patientrepositoryMock.patients[0].id, 'any_random_id')
   });
-})
+});

@@ -5,6 +5,7 @@ export class PatientDTOMock implements IUser {
     email: string;
     genderId: number;
     birthDate: Date;
+    password: string;
   
     constructor(values: IUser, public readonly id?: string) {
       Object.assign(this, values);
