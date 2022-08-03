@@ -4,5 +4,6 @@ export interface IUserUpdate {
     genderId?: number;
     birthDate?: string;
     password?: string;
+    newPassword?: string;
     confirmPassword?: string;
 }

@@ -1,5 +1,7 @@
 import { IPatientRepository } from "App/Interfaces/IPatientRepository";
 import { IUser } from '../../../../app/Interfaces/IUser';
+import PatientNotFoundException from '../../../../app/Exceptions/PatientNotFoundException';
+import { IUserUpdate } from '../../../../app/Interfaces/IUserUpdate';
 
 export class PatientRepositoryMock implements IPatientRepository {
     public patients: IUser[] = [];
@@ -21,10 +23,7 @@ export class PatientRepositoryMock implements IPatientRepository {
       return this.patients.find(patient => patient.id === id);
     }
 
-    async update(patient: IUser, payload: Object): Promise<void> {
-      const foundPatient = this.patients.find(_patient => _patient.id === patient.id);
-      if(foundPatient === undefined) return
-
-      Object.assign(foundPatient, payload);
+    async update(patient: IUser, payload: IUserUpdate): Promise<void | never> {
+      Object.assign(patient, payload);
     }
 }

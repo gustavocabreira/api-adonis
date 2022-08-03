@@ -6,6 +6,7 @@ export class UpdatePatientDTO implements IUserUpdate {
     genderId?: number;
     birthDate?: string;
     password?: string;
+    newPassword?: string;
     confirmPassword?: string;
   
     constructor(values: IUserUpdate) {
