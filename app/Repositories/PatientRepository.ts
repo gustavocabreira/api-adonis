@@ -1,7 +1,7 @@
 import { IPatientRepository } from "App/Interfaces/IPatientRepository";
-import { IUser } from '../../../../app/Interfaces/IUser';
+import { IUser } from "App/Interfaces/IUser";
 
-export class PatientRepositoryMock implements IPatientRepository {
+export class PatientRepository implements IPatientRepository {
     public patients: IUser[] = [];
     public count = 0;
   

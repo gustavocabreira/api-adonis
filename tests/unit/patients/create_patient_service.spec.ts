@@ -41,4 +41,15 @@ test.group('CreatePatientService', () => {
     assert.equal(patientrepositoryMock.patients[0].id, 'any_random_id')
     assert.notEqual(passwordBeforeEncrypt, patientrepositoryMock.patients[0].password);
   });
+
+  test('it should not be able to create a patient with a duplicated email', async({assert}) => {
+    const {patient, sut} = makeSut();
+    await sut.execute(patient);
+
+    try {
+      await sut.execute(patient);
+    } catch (error) {
+      assert.equal('This email has already been taken.', error.message)
+    }
+  });
 });
