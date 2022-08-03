@@ -16,4 +16,8 @@ export class PatientRepositoryMock implements IPatientRepository {
     async findByEmail(email: string): Promise<IUser | undefined> {
       return this.patients.find(patient => patient.email === email);
     }
+
+    async findById(id: string): Promise<IUser | undefined> {
+      return this.patients.find(patient => patient.id === id);
+    }
 }
