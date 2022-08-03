@@ -24,13 +24,7 @@ export default class PatientsController {
       return response.status(201).json(result);
 
     } catch(exception) {
-      
-      if(exception instanceof EmailAlreadyBeenTakenException) {
-        return response.status(422).send({error: exception.message});
-      }
-
-      return response.status(500).send({error: exception.message});
-      
+      return response.status(exception.status).send({error: exception.message});
     }
   }
 

@@ -6,10 +6,7 @@ import { v4 as uuidv4 } from 'uuid';
 import { IUser } from '../Interfaces/IUser';
 
 export default class Patient extends BaseModel implements IUser {
-  @column({
-    // isPrimary: true,
-    // prepare: (value: string) => value ? value : uuidv4()
-  })
+  @column()
   public id: string
 
   @column()
@@ -22,7 +19,7 @@ export default class Patient extends BaseModel implements IUser {
   public password: string
 
   @column()
-  public birthDate: Date
+  public birthDate: string
 
   @column()
   public genderId: number

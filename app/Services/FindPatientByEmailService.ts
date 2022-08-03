@@ -2,11 +2,11 @@ import { IPatientRepository } from '../Interfaces/IPatientRepository';
 import { IUser } from '../Interfaces/IUser';
 import PatientNotFoundException from '../Exceptions/PatientNotFoundException';
 
-export class FindPatientByIdService {
+export class FindPatientByEmailService {
     constructor(private patientRepository: IPatientRepository) {}
   
-    async execute(id: string): Promise<IUser | undefined | never> {
-      const patient = this.patientRepository.findById(id);
+    async execute(email: string): Promise<IUser | undefined | never> {
+      const patient = this.patientRepository.findByEmail(email);
   
       if(!patient) throw new PatientNotFoundException('Patient not found.', 404);
   

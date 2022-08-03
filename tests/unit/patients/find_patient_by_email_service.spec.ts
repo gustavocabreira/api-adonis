@@ -2,13 +2,13 @@ import { test } from '@japa/runner'
 import { PatientDTOMock } from './Mocks/PatientDTOMock';
 import { PatientRepositoryMock } from './Mocks/PatientRepositoryMock';
 import { CreatePatientService } from '../../../app/Services/CreatePatientService';
-import { FindPatientByIdService } from '../../../app/Services/FindPatientByIdService';
+import { FindPatientByEmailService } from '../../../app/Services/FindPatientByEmailService';
 import PatientNotFoundException from '../../../app/Exceptions/PatientNotFoundException';
 
 type SutOutput = {
   patient: PatientDTOMock,
   patientrepositoryMock: PatientRepositoryMock,
-  sut: FindPatientByIdService
+  sut: FindPatientByEmailService
 }
 
 const makeSut = async (): Promise<SutOutput> => {
@@ -24,7 +24,7 @@ const makeSut = async (): Promise<SutOutput> => {
   const createPatientService = new CreatePatientService(patientrepositoryMock);
   await createPatientService.execute(patient);
 
-  const sut = new FindPatientByIdService(patientrepositoryMock);
+  const sut = new FindPatientByEmailService(patientrepositoryMock);
 
   return {
     patient,
@@ -33,22 +33,22 @@ const makeSut = async (): Promise<SutOutput> => {
   }
 }
 
-test.group('FindPatientByIdService', () => {
+test.group('FindPatientByEmailService', () => {
   test('it should be able to retrieve a patient', async ({assert}) => {
     const {patient, sut} = await makeSut();
-    const id = patient.id;
-    if(!id) return;
+    const email = patient.email;
+    if(!email) return;
 
-    const result = await sut.execute(id);
+    const result = await sut.execute(email);
 
-    assert.equal(result?.id, id);
+    assert.equal(result?.email, email);
   });
 
-  test('it should not be able to retrive a patient when providing invalid id', async({assert}) => {
+  test('it should not be able to retrive a patient when providing invalid email', async({assert}) => {
     const {sut} = await makeSut();
 
     try {
-      await sut.execute('invalid_id');
+      await sut.execute('invalid_email');
     } catch(error) {
       assert.equal('Patient not found.', error.message)
       assert.instanceOf(error, PatientNotFoundException)
