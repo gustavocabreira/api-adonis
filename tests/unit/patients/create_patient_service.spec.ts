@@ -1,82 +1,42 @@
 import { test } from '@japa/runner'
+import { CreatePatientService } from 'App/Services/CreatePatientService';
+import { PatientDTOMock } from './Mocks/PatientDTOMock';
+import { PatientRepositoryMock } from './Mocks/PatientRepositoryMock';
 
-interface IUser {
-  readonly id?: string;
-  fullName: string;
-  email: string;
-  genderId: number;
-  birthDate: Date;
+
+type SutOutput = {
+  patient: PatientDTOMock,
+  patientrepositoryMock: PatientRepositoryMock,
+  sut: CreatePatientService
 }
 
-class PatientDTO implements IUser{
-  fullName: string;
-  email: string;
-  genderId: number;
-  birthDate: Date;
-
-  constructor(values: IUser, public readonly id?: string) {
-    Object.assign(this, values);
-
-    if(this.id === undefined) {
-      this.id = 'any_random_id';
-    }
-  }
-}
-
-class CreatePatientService {
-  constructor(private patientRepository: PatientRepository) {}
-
-  async execute(patient: PatientDTO): Promise<IUser> {
-    return this.patientRepository.create(patient);
-  }
-}
-
-interface PatientRepository {
-  patients: IUser[];
-
-  create(patient: IUser): Promise<IUser>;
-}
-
-class PatientRepositoryMock implements PatientRepository {
-  public patients: IUser[] = [];
-  public count = 0;
-
-  constructor() {}
-
-  async create(patient: IUser): Promise<IUser> {
-    this.patients.push(patient);
-    this.count++;
-    return patient;
-  }
-}
-
-const makeSut = () => {
-  const patient = new PatientDTO({
+const makeSut = (): SutOutput => {
+  const patient = new PatientDTOMock({
     fullName: 'Gustavo de Sousa Cabreira',
     email: 'gustavo.softdev@gmail.com',
     genderId: 1,
     birthDate: new Date()
   });
 
-  const patientRepository = new PatientRepositoryMock();
-  const sut = new CreatePatientService(patientRepository);
+  const patientrepositoryMock = new PatientRepositoryMock();
+  const sut = new CreatePatientService(patientrepositoryMock);
 
   return {
     patient,
-    patientRepository,
+    patientrepositoryMock,
     sut,
   }
 }
 
 test.group('CreatePatientService', () => {
   test('it should be able to create a patient', async ({assert}) => {
-    const {patient, patientRepository, sut} = makeSut();
+    const {patient, patientrepositoryMock, sut} = makeSut();
     const response = await sut.execute(patient);
 
-    assert.instanceOf(response, PatientDTO)
+    assert.instanceOf(response, PatientDTOMock)
     assert.deepEqual(response, patient)
-    assert.lengthOf(patientRepository.patients, 1)
-    assert.equal(patientRepository.count, 1)
-    assert.equal(patientRepository.patients[0].id, 'any_random_id')
+    assert.lengthOf(patientrepositoryMock.patients, 1)
+    assert.equal(patientrepositoryMock.count, 1)
+    assert.equal(patientrepositoryMock.patients[0].id, 'any_random_id')
   });
 })

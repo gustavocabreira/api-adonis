@@ -2,10 +2,15 @@ import { DateTime } from 'luxon'
 import { BaseModel, beforeCreate, belongsTo, column, HasOne, hasOne } from '@ioc:Adonis/Lucid/Orm'
 import bcrypt from 'bcrypt';
 import Gender from './Gender';
+import { v4 as uuidv4 } from 'uuid';
+import { IUser } from '../Interfaces/IUser';
 
-export default class Patient extends BaseModel {
-  @column({ isPrimary: true })
-  public id: number
+export default class Patient extends BaseModel implements IUser {
+  @column({
+    isPrimary: true,
+    prepare: (value: string) => value ? value : uuidv4()
+  })
+  public id: string
 
   @column()
   public fullName: string
@@ -35,6 +40,11 @@ export default class Patient extends BaseModel {
   public static async setEncryptedPassword(patient: Patient) {
     const salt = await bcrypt.genSalt(10);
     patient.password = await bcrypt.hash(patient.email, salt)
+  }
+
+  @beforeCreate()
+  public static async createUUID (patient: Patient) {
+    patient.id = uuidv4()
   }
 
   @hasOne(() => Gender)
