@@ -47,7 +47,9 @@ test.group('FindPatientServiceById', () => {
     const {patient, sut} = await makeSut();
     const id = patient.id;
     if(!id) return;
+
     const result = await sut.execute(id);
+    
     assert.equal(result?.id, id);
   });
 })

@@ -32,6 +32,7 @@ test.group('CreatePatientService', () => {
   test('it should be able to create a patient', async ({assert}) => {
     const {patient, patientrepositoryMock, sut} = makeSut();
     const passwordBeforeEncrypt = patient.password;
+    
     const response = await sut.execute(patient);
 
     assert.instanceOf(response, PatientDTOMock)
@@ -44,6 +45,7 @@ test.group('CreatePatientService', () => {
 
   test('it should not be able to create a patient with a duplicated email', async({assert}) => {
     const {patient, sut} = makeSut();
+
     await sut.execute(patient);
 
     try {

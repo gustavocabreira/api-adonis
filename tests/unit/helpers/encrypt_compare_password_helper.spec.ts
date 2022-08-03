@@ -5,7 +5,9 @@ import { EncryptPasswordHelper } from '../../../app/Helpers/EncryptPasswordHelpe
 test.group('EncryptPasswordHelper', () => {
   test('it should encrypt password', async({assert}) => {
     const password = '12345678';
+
     const encryptedPassword = EncryptPasswordHelper.execute(password);
+
     assert.notEqual(password, encryptedPassword);
   });
 
@@ -13,7 +15,9 @@ test.group('EncryptPasswordHelper', () => {
     const rawPassword = '12345678';
     const originalPassword = await EncryptPasswordHelper.execute(rawPassword);
     const providedPassword = 'wrong passowrd';
+
     const result = await ComparePasswordHelper.execute(originalPassword, providedPassword);
+
     assert.isFalse(result);
   });
 
@@ -21,7 +25,9 @@ test.group('EncryptPasswordHelper', () => {
     const rawPassword = '12345678';
     const originalPassword = await EncryptPasswordHelper.execute(rawPassword);
     const providedPassword = rawPassword;
+
     const result = await ComparePasswordHelper.execute(originalPassword, providedPassword);
+    
     assert.isTrue(result);
   });
 })
