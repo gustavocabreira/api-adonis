@@ -1,6 +1,7 @@
 import { IUser } from '../Interfaces/IUser';
 import { IPatientRepository } from '../Interfaces/IPatientRepository';
 import { EncryptPasswordHelper } from '../Helpers/EncryptPasswordHelper';
+import EmailAlreadyBeenTakenException from '../Exceptions/EmailAlreadyBeenTakenException';
 
 export class CreatePatientService {
     constructor(private patientRepository: IPatientRepository) {}
@@ -9,7 +10,7 @@ export class CreatePatientService {
         const existingPatient = await this.patientRepository.findByEmail(patient.email);
         
         if(existingPatient !== undefined) {
-            throw new Error('This email has already been taken.');
+            throw new EmailAlreadyBeenTakenException('This email has already been taken.');
         }
         
         patient.password = await EncryptPasswordHelper.execute(patient.password);

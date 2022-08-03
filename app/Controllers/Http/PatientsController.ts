@@ -1,6 +1,11 @@
 import type { HttpContextContract } from '@ioc:Adonis/Core/HttpContext'
 import Patient from 'App/Models/Patient';
 import bcrypt from 'bcrypt';
+import { CreatePatientService } from '../../Services/CreatePatientService';
+import { PatientRepository } from '../../Repositories/PatientRepository';
+import { PatientDTO } from '../../DTOs/PatientDTO';
+import EmailAlreadyBeenTakenException from '../../Exceptions/EmailAlreadyBeenTakenException';
+import CreatePatientValidator from '../../Validators/CreatePatientValidator';
 
 export default class PatientsController {
   public async index({ response }: HttpContextContract) {
@@ -9,15 +14,24 @@ export default class PatientsController {
   }
 
   public async store({ request, response }: HttpContextContract) {
-    const data = request.only(['fullName', 'email', 'birthDate', 'genderId']);
-    const patientExists = await Patient.find({ email: data.email });
+    const payload = await request.validate(CreatePatientValidator);
 
-    if (patientExists) {
-      return response.status(422).json({ error: 'This email has already been taken.' });
+    try {
+      
+      const patient = new PatientDTO(payload);
+      const createPatientService = new CreatePatientService(new PatientRepository());
+      const result = await createPatientService.execute(patient);
+      return response.status(201).json(result);
+
+    } catch(exception) {
+      
+      if(exception instanceof EmailAlreadyBeenTakenException) {
+        return response.status(422).send({error: exception.message});
+      }
+
+      return response.status(500).send({error: exception.message});
+      
     }
-
-    const result = await Patient.create(data);
-    return response.status(201).json(result);
   }
 
   public async show({ request, response }: HttpContextContract) {

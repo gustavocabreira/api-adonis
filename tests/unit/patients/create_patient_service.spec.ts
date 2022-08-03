@@ -14,7 +14,7 @@ const makeSut = (): SutOutput => {
     fullName: 'Gustavo de Sousa Cabreira',
     email: 'gustavo.softdev@gmail.com',
     genderId: 1,
-    birthDate: new Date(),
+    birthDate: '1999-12-21 00:00:00',
     password: '12345678'
   });
 

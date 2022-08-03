@@ -4,7 +4,7 @@ export class PatientDTOMock implements IUser {
     fullName: string;
     email: string;
     genderId: number;
-    birthDate: Date;
+    birthDate: string;
     password: string;
   
     constructor(values: IUser, public readonly id?: string) {

@@ -7,8 +7,8 @@ import { IUser } from '../Interfaces/IUser';
 
 export default class Patient extends BaseModel implements IUser {
   @column({
-    isPrimary: true,
-    prepare: (value: string) => value ? value : uuidv4()
+    // isPrimary: true,
+    // prepare: (value: string) => value ? value : uuidv4()
   })
   public id: string
 

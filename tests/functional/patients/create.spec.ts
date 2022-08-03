@@ -20,12 +20,12 @@ test.group('Patients create', (group) => {
       .json({
         fullName: 'Gustavo Cabreira',
         email: 'gustavo.softdev@gmail.com',
-        birthDate: '1999-12-21',
+        birthDate: '1999-12-21 00:00:00',
         genderId: 1,
+        password: '12345678'
       });
     response.assertStatus(201);
     response.assertBodyContains({
-      id: 1,
       full_name: 'Gustavo Cabreira',
       email: 'gustavo.softdev@gmail.com'
     });
@@ -37,8 +37,9 @@ test.group('Patients create', (group) => {
       .json({
         fullName: 'Gustavo Cabreira',
         email: patient.email,
-        birthDate: '1999-12-21',
+        birthDate: '1999-12-21 00:00:00',
         genderId: 1,
+        password: '12345678'
       });
     response.assertStatus(422);
     response.assertBody({error: 'This email has already been taken.'})
