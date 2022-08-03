@@ -31,6 +31,7 @@ const makeSut = (): SutOutput => {
 test.group('CreatePatientService', () => {
   test('it should be able to create a patient', async ({assert}) => {
     const {patient, patientrepositoryMock, sut} = makeSut();
+    const passwordBeforeEncrypt = patient.password;
     const response = await sut.execute(patient);
 
     assert.instanceOf(response, PatientDTOMock)
@@ -38,5 +39,6 @@ test.group('CreatePatientService', () => {
     assert.lengthOf(patientrepositoryMock.patients, 1)
     assert.equal(patientrepositoryMock.count, 1)
     assert.equal(patientrepositoryMock.patients[0].id, 'any_random_id')
+    assert.notEqual(passwordBeforeEncrypt, patientrepositoryMock.patients[0].password);
   });
 });
