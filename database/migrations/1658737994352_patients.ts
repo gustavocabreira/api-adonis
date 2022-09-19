@@ -5,18 +5,17 @@ export default class extends BaseSchema {
 
   public async up () {
     this.schema.createTable(this.tableName, (table) => {
-      table.increments('id')
+      table.uuid('id').index().notNullable();
       table.string('full_name').notNullable()
       table.string('email').unique().notNullable()
       table.string('password').notNullable()
-      table.date('birth_date').notNullable()
+      table.dateTime('birth_date').notNullable()
       table.integer('gender_id').notNullable().unsigned().references('genders.id')
       table.integer('status_id').notNullable().defaultTo(1).unsigned().references('statuses.id')
       /**
        * Uses timestamptz for PostgreSQL and DATETIME2 for MSSQL
        */
-      table.timestamp('created_at', { useTz: true })
-      table.timestamp('updated_at', { useTz: true })
+      table.timestamps(true, true)
     })
   }
 

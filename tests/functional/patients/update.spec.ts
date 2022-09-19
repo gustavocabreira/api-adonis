@@ -54,22 +54,22 @@ test.group('Patients update', (group) => {
     const patient = await PatientFactory.create();
     const response = await client.put(`/api/patients/${patient.id}`)
       .json({
-        password: '123456',
+        newPassword: '123456',
         confirmPassword: '123456',
-        oldPassword: 'wrong',
+        password: 'wrong',
       });
 
     response.assertStatus(422);
-    response.assertBody({ error: 'Old password is wrong.' });
+    response.assertBody({ error: 'Wrong password provided.' });
   });
 
   test("can't update a patient's password if the new password and the confirm password are different", async ({ client }) => {
     const patient = await PatientFactory.create();
     const response = await client.put(`/api/patients/${patient.id}`)
       .json({
-        password: '123456',
+        newPassword: '123456',
         confirmPassword: '1234567',
-        oldPassword: patient.email,
+        password: patient.email,
       });
 
     response.assertStatus(422);
